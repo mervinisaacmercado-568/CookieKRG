@@ -1,4 +1,4 @@
-// CookieKRG 2.0 - Supreme Brain Logic (Stable Library Edition)
+// CookieKRG 2.0
 const internalBrain = [
     {
         keys: ["boboiboy hitech", "vancouver", "wildbrain", "2021"],
@@ -29,11 +29,72 @@ const internalBrain = [
 const greetings = ["hello", "hi", "hey", "good morning", "yo", "sup"];
 const swearWords = ["fuck", "shit", "asshole", "bitch", "dick", "pussy", "bastard", "damn", "crap", "piss"]; 
 
-// Live KRG Connection: Open Library Stable Protocol
+// Live KRG Connection: Encyclopedia Summary Protocol
 async function executeKRGLink(query) {
     status.innerText = "Accessing KRG Archives...";
     status.classList.add('text-sky-500');
     
+    try {
+        // Encyclopedia KRG: Direct knowledge streaming
+        const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        // Outputting the raw extract directly for a cleaner model feel
+        if (data && data.extract) {
+            return data.extract;
+        } else {
+            return "This query involves currently unsupported knowledge in our active KRG sectors there actually also.";
+        }
+    } catch (e) {
+        return "The KRG network is shifting connections at there. Try again in a moment!";
+    } finally {
+        status.innerText = "Neural Link Stable";
+        status.classList.remove('text-sky-500');
+    }
+}
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+
+    appendMessage(text, true);
+    input.value = '';
+
+    const lowerText = text.toLowerCase();
+    const words = lowerText.split(/\s+/);
+
+    // Stage 1: Robust Filter
+    if (words.some(word => swearWords.includes(word))) {
+        appendMessage("Sorry, I can’t do that thing as it uses swear words there actually also.", false);
+        return;
+    }
+
+    // Stage 2: Identity Logic
+    if (lowerText.includes("your name") || lowerText.includes("who are you")) {
+        appendMessage("I am the CookieKRG 2.0, the core executor of this Supreme Brain system there actually also! 👋", false);
+        return;
+    }
+
+    // Stage 3: Greeting Protocol
+    if (greetings.some(word => lowerText.startsWith(word))) {
+        appendMessage("Hello there! I am ready to help you with your queries today. 👋", false);
+        return;
+    }
+
+    // Stage 4: Local Brain
+    const localMatch = internalBrain.find(b => b.keys.some(k => lowerText.includes(k)));
+    if (localMatch) {
+        setTimeout(() => {
+            appendMessage(localMatch.data, false);
+        }, 500);
+    } else {
+        // Stage 5: Live KRG Encyclopedia
+        const result = await executeKRGLink(text);
+        appendMessage(result, false);
+    }
+});
     try {
         const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=1`;
         const response = await fetch(url);
