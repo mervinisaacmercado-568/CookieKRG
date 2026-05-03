@@ -1,4 +1,4 @@
-// CookieKRG 2.0 - Supreme Brain Logic
+// CookieKRG 2.0 - Supreme Multi-Link Logic
 const internalBrain = [
     {
         keys: ["boboiboy hitech", "vancouver", "wildbrain", "2021"],
@@ -26,52 +26,33 @@ const internalBrain = [
     }
 ];
 
-// Robust Prediction: Expanded safety layer
-const swearWords = [
-    "fuck", "shit", "asshole", "bitch", "dick", "pussy", "bastard", 
-    "damn", "crap", "hell", "piss", "motherfucker", "fucker", "slut", "whore"
-];
-const greetings = ["hello", "hi", "hey", "good morning", "good afternoon", "good evening", "yo", "sup"];
+const greetings = ["hello", "hi", "hey", "good morning", "yo", "sup"];
+const swearWords = ["fuck", "shit", "asshole", "bitch", "dick", "pussy", "bastard", "damn", "crap", "piss"]; 
 
-const display = document.getElementById('chat-display');
-const form = document.getElementById('chat-form');
-const input = document.getElementById('user-input');
-const status = document.getElementById('brain-status');
-
-function appendMessage(text, isUser) {
-    const wrapper = document.createElement('div');
-    wrapper.className = `flex ${isUser ? 'justify-end' : 'justify-start'} w-full animate-msg`;
-    
-    const html = isUser 
-        ? `<div class="user-bubble px-5 py-3 text-white max-w-[85%] text-sm font-semibold shadow-xl">${text}</div>`
-        : `<div class="ai-bubble px-5 py-4 text-slate-200 max-w-[85%] text-sm leading-relaxed shadow-lg">${text}</div>`;
-    
-    wrapper.innerHTML = html;
-    display.appendChild(wrapper);
-    display.scrollTop = display.scrollHeight;
-}
-
-// DuckDuckGo KRG Execution (No keys, dynamic opinions)
-async function getLiveKRG(query) {
+// Live KRG Connection: Global Metadata Protocol
+async function executeKRGLink(query) {
     status.innerText = "Accessing KRG Archives...";
     status.classList.add('text-sky-500');
     
     try {
-        // DDG API provides abstracts and related topics which include perspectives
-        const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&pretty=1&no_html=1&skip_disambig=1`;
+        // Active Connection: RestCountries KRG
+        const url = `https://restcountries.com/v3.1/name/${encodeURIComponent(query)}`;
         const response = await fetch(url);
         const data = await response.json();
         
-        // Prioritize Abstract or Textual definitions for opinionated facts
-        if (data.AbstractText) {
-            return `${data.AbstractText} (Reflected in KRG archives there also).`;
-        } else if (data.RelatedTopics && data.RelatedTopics.length > 0) {
-            return data.RelatedTopics[0].Text;
+        if (data && data[0]) {
+            const country = data[0];
+            const name = country.name.common;
+            const region = country.region;
+            const capital = country.capital ? country.capital[0] : "N/A";
+            const population = country.population.toLocaleString();
+            
+            return `${name} is a country located in ${region}. Its capital is ${capital} with a population of approximately ${population}. (Data verified in KRG metadata there also).`;
         } else {
-            return "The KRG link is clear, but this specific entry is still being indexed in the nonfiction archives.";
+            return "The KRG link is active, but that specific nation or metadata entry is still being indexed.";
         }
     } catch (e) {
-        return "I explored the KRG network, but i couldn't find a stable connection to that specific topic. Can we talk about your favorites instead?";
+        return "The KRG network is shifting connections at there. Try again in a moment!";
     } finally {
         status.innerText = "Neural Link Stable";
         status.classList.remove('text-sky-500');
@@ -87,35 +68,29 @@ form.addEventListener('submit', async (e) => {
     input.value = '';
 
     const lowerText = text.toLowerCase();
+    const words = lowerText.split(/\s+/); // Critical: Whole-word detection
 
-    // Stage 1: Robust Filter
-    const hasSwear = swearWords.some(word => lowerText.includes(word));
-    if (hasSwear) {
-        setTimeout(() => {
-            appendMessage("Sorry, I can’t do that thing as it uses swear words there actually also.", false);
-        }, 400);
+    // Stage 1: Robust Filter (Hello is safe!)
+    if (words.some(word => swearWords.includes(word))) {
+        appendMessage("Sorry, I can’t do that thing as it uses swear words there actually also.", false);
         return;
     }
 
     // Stage 2: Greeting Protocol
-    const isGreeting = greetings.some(word => lowerText === word || lowerText.startsWith(word + " "));
-    if (isGreeting) {
-        setTimeout(() => {
-            appendMessage("Hello there! I am ready to help you with your queries today. 👋", false);
-        }, 300);
+    if (greetings.some(word => lowerText.startsWith(word))) {
+        appendMessage("Hello there! I am ready to help you with your queries today. 👋", false);
         return;
     }
 
-    // Stage 3: Local Brain Check
+    // Stage 3: Local Brain (BoBoiBoy / Star Fox / History)
     const localMatch = internalBrain.find(b => b.keys.some(k => lowerText.includes(k)));
-
     if (localMatch) {
         setTimeout(() => {
             appendMessage(localMatch.data, false);
         }, 500);
     } else {
-        // Stage 4: Live KRG Execution
-        const liveData = await getLiveKRG(text);
-        appendMessage(liveData, false);
+        // Stage 4: Live KRG (RestCountries Protocol)
+        const result = await executeKRGLink(text);
+        appendMessage(result, false);
     }
 });
