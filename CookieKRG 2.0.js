@@ -1,4 +1,4 @@
-// CookieKRG 2.0 - Supreme Multi-Link Logic
+// CookieKRG 2.0 - Supreme Brain Logic (Stable Library Edition)
 const internalBrain = [
     {
         keys: ["boboiboy hitech", "vancouver", "wildbrain", "2021"],
@@ -29,27 +29,25 @@ const internalBrain = [
 const greetings = ["hello", "hi", "hey", "good morning", "yo", "sup"];
 const swearWords = ["fuck", "shit", "asshole", "bitch", "dick", "pussy", "bastard", "damn", "crap", "piss"]; 
 
-// Live KRG Connection: Global Metadata Protocol
+// Live KRG Connection: Open Library Stable Protocol
 async function executeKRGLink(query) {
     status.innerText = "Accessing KRG Archives...";
     status.classList.add('text-sky-500');
     
     try {
-        // Active Connection: RestCountries KRG
-        const url = `https://restcountries.com/v3.1/name/${encodeURIComponent(query)}`;
+        const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=1`;
         const response = await fetch(url);
         const data = await response.json();
         
-        if (data && data[0]) {
-            const country = data[0];
-            const name = country.name.common;
-            const region = country.region;
-            const capital = country.capital ? country.capital[0] : "N/A";
-            const population = country.population.toLocaleString();
+        if (data && data.docs && data.docs.length > 0) {
+            const entry = data.docs[0];
+            const title = entry.title;
+            const author = entry.author_name ? entry.author_name[0] : "Unknown Author";
+            const year = entry.first_publish_year || "Various Years";
             
-            return `${name} is a country located in ${region}. Its capital is ${capital} with a population of approximately ${population}. (Data verified in KRG metadata there also).`;
+            return `I have located archives for "${title}" by ${author}, first documented in ${year}. (Records held in KRG nonfiction database there also).`;
         } else {
-            return "The KRG link is active, but that specific nation or metadata entry is still being indexed.";
+            return "This query involves currently unsupported knowledge in our active KRG sectors there actually also.";
         }
     } catch (e) {
         return "The KRG network is shifting connections at there. Try again in a moment!";
@@ -68,28 +66,34 @@ form.addEventListener('submit', async (e) => {
     input.value = '';
 
     const lowerText = text.toLowerCase();
-    const words = lowerText.split(/\s+/); // Critical: Whole-word detection
+    const words = lowerText.split(/\s+/);
 
-    // Stage 1: Robust Filter (Hello is safe!)
+    // Stage 1: Robust Filter
     if (words.some(word => swearWords.includes(word))) {
         appendMessage("Sorry, I can’t do that thing as it uses swear words there actually also.", false);
         return;
     }
 
-    // Stage 2: Greeting Protocol
+    // Stage 2: Identity Logic (Updated Model Name)
+    if (lowerText.includes("your name") || lowerText.includes("who are you")) {
+        appendMessage("I am the CookieKRG 2.0, the core executor of this Supreme Brain system there actually also! 👋", false);
+        return;
+    }
+
+    // Stage 3: Greeting Protocol
     if (greetings.some(word => lowerText.startsWith(word))) {
         appendMessage("Hello there! I am ready to help you with your queries today. 👋", false);
         return;
     }
 
-    // Stage 3: Local Brain (BoBoiBoy / Star Fox / History)
+    // Stage 4: Local Brain
     const localMatch = internalBrain.find(b => b.keys.some(k => lowerText.includes(k)));
     if (localMatch) {
         setTimeout(() => {
             appendMessage(localMatch.data, false);
         }, 500);
     } else {
-        // Stage 4: Live KRG (RestCountries Protocol)
+        // Stage 5: Live KRG
         const result = await executeKRGLink(text);
         appendMessage(result, false);
     }
