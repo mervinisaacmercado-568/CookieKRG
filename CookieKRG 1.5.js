@@ -1,4 +1,4 @@
-        // Massive Internalized Neural Knowledge
+        // CookieKRG 1.5
         const internalBrain = [
             {
                 keys: ["boboiboy hitech", "vancouver", "wildbrain", "2021"],
