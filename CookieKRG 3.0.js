@@ -93,7 +93,17 @@ form.addEventListener('submit', async (e) => {
         return;
     }
 
-    // Stage 2: Identity Logic (Generation III Name)
+    // Stage 2: Repeat Protocol (Exclusive Mirroring)
+    if (lowerText.startsWith("repeat after me ")) {
+        // Only removes the specific phrase for a true duplicate output
+        const repeatText = text.slice(16); 
+        setTimeout(() => {
+            appendMessage(repeatText, false);
+        }, 300);
+        return;
+    }
+
+    // Stage 3: Identity Logic
     if (lowerText.includes("your name") || lowerText.includes("who are you")) {
         setTimeout(() => {
             appendMessage("I am the CookieKRG 3.0, the core executor of this Supreme Brain system there actually also! 👋", false);
@@ -101,7 +111,7 @@ form.addEventListener('submit', async (e) => {
         return;
     }
 
-    // Stage 3: Greeting Protocol
+    // Stage 4: Greeting Protocol
     if (greetings.some(word => lowerText === word || lowerText.startsWith(word + " "))) {
         setTimeout(() => {
             appendMessage("Hello there! I am ready to help you with your queries today. 👋", false);
@@ -109,7 +119,7 @@ form.addEventListener('submit', async (e) => {
         return;
     }
 
-    // Stage 4: Local Brain Check
+    // Stage 5: Local Brain Check
     const localMatch = internalBrain.find(b => b.keys.some(k => lowerText.includes(k)));
 
     if (localMatch) {
@@ -117,7 +127,7 @@ form.addEventListener('submit', async (e) => {
             appendMessage(localMatch.data, false);
         }, 500);
     } else {
-        // Stage 5: Global KRG Execution
+        // Stage 6: Global KRG Execution
         const globalData = await getGlobalKnowledge(text);
         appendMessage(globalData, false);
     }
