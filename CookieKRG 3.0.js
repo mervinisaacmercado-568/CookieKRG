@@ -93,10 +93,11 @@ form.addEventListener('submit', async (e) => {
         return;
     }
 
-    // Stage 2: Repeat Protocol (Exclusive Mirroring)
-    if (lowerText.startsWith("repeat after me ")) {
-        // Only removes the specific phrase for a true duplicate output
-        const repeatText = text.slice(16); 
+    // Stage 2: Original Repeat Protocol (Generation III)
+    if (lowerText.startsWith("repeat after me:") || lowerText.startsWith("repeat after me ")) {
+        // Logic to detect if a colon is used or just a space
+        const prefix = lowerText.startsWith("repeat after me:") ? 16 : 16;
+        const repeatText = text.slice(prefix).trim(); 
         setTimeout(() => {
             appendMessage(repeatText, false);
         }, 300);
